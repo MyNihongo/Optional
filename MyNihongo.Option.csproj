@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<Nullable>enable</Nullable>
@@ -13,13 +12,4 @@
 		<PackageProjectUrl>https://github.com/MyNihongo/Optional</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/MyNihongo/Optional</RepositoryUrl>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <None Include="..\..\icons\favico.png">
-	    <Pack>True</Pack>
-	    <PackagePath />
-	  </None>
-	  <None Include="..\..\MyNihongo.licenseheader" Link="MyNihongo.licenseheader" />
-	</ItemGroup>
-
 </Project>
