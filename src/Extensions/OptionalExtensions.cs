@@ -8,7 +8,7 @@ namespace MyNihongo.Option.Extensions
 {
 	public static class OptionalExtensions
 	{
-		public static Optional<T> ValueOr<T>(this Optional<T> @this, T fallbackValue) =>
+		public static T ValueOr<T>(this Optional<T> @this, T fallbackValue) =>
 			@this.HasValue
 				? @this.Value
 				: fallbackValue;
