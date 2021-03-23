@@ -31,5 +31,25 @@ namespace MyNihongo.Option.Extensions
 			if (@this.HasValue)
 				action(@this.Value);
 		}
+		
+		public static async ValueTask IfHasValueAsync<T>(this Optional<T> @this, Func<T, Task>? funcAsync)
+		{
+			if (funcAsync == null)
+				throw new ArgumentNullException(nameof(funcAsync));
+
+			if (@this.HasValue)
+				await funcAsync(@this.Value)
+					.ConfigureAwait(false);
+		}
+
+		public static async ValueTask IfHasValueAsync<T>(this Optional<T> @this, Func<T, ValueTask>? funcAsync)
+		{
+			if (funcAsync == null)
+				throw new ArgumentNullException(nameof(funcAsync));
+
+			if (@this.HasValue)
+				await funcAsync(@this.Value)
+					.ConfigureAwait(false);
+		}
 	}
 }
