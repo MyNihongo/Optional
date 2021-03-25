@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright © 2021 MyNihongo
 */
 
@@ -10,6 +10,9 @@ namespace MyNihongo.Option.Extensions
 	{
 		public static Optional<T> AsOptional<T>(this T @this) =>
 			Optional<T>.Of(@this);
+
+		public static ValueTask<Optional<T>> AsOptionalAsync<T>(this T @this) =>
+			new(Optional<T>.Of(@this));
 
 		public static async ValueTask<Optional<T>> AsOptionalAsync<T>(this ValueTask<T> @this) =>
 			await @this.ConfigureAwait(false);

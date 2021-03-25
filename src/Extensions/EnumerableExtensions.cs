@@ -94,7 +94,7 @@ namespace MyNihongo.Option.Extensions
 					throw new ArgumentNullException(nameof(@this));
 				case IList<TSource> list:
 					{
-						for (var i = list.Count - 1; i <= 0; i--)
+						for (var i = list.Count - 1; i >= 0; i--)
 							if (predicate(list[i]))
 								return list[i];
 
@@ -151,23 +151,18 @@ namespace MyNihongo.Option.Extensions
 				throw new ArgumentNullException(nameof(predicate));
 
 			var result = Optional<TSource>.None();
-			long count = 0;
 
 			foreach (var element in @this)
 			{
 				if (!predicate(element))
 					continue;
+				if (result.HasValue)
+					throw new InvalidOperationException("Found more than one element in the source");
 
 				result = element;
-				checked { count++; }
 			}
 
-			return count switch
-			{
-				0 => Optional<TSource>.None(),
-				1 => result,
-				_ => throw new InvalidOperationException("Found more than one element in the source")
-			};
+			return result;
 		}
 
 		public static Optional<TSource> ElementAtOrOptional<TSource>(this IEnumerable<TSource> @this, int index)
@@ -272,10 +267,20 @@ namespace MyNihongo.Option.Extensions
 			return hasValue ? value : Optional<TSource>.None();
 		}
 
-		public static Optional<TResult> MaxOrOptional<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) =>
-			source.Select(selector).MaxOrOptional();
+		public static Optional<TResult> MinOrOptional<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult>? selector)
+		{
+			if (selector == null)
+				throw new ArgumentNullException(nameof(selector));
+			
+			return source.Select(selector).MinOrOptional();
+		}
 
-		public static Optional<TResult> MinOrOptional<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) =>
-			source.Select(selector).MinOrOptional();
+		public static Optional<TResult> MaxOrOptional<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult>? selector)
+		{
+			if (selector == null)
+				throw new ArgumentNullException(nameof(selector));
+
+			return source.Select(selector).MaxOrOptional();
+		}
 	}
 }
