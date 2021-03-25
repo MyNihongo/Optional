@@ -1,8 +1,9 @@
-﻿/*
+/*
 * Copyright © 2021 MyNihongo
 */
 
 using System;
+using System.Threading.Tasks;
 
 namespace MyNihongo.Option.Extensions
 {
@@ -12,44 +13,55 @@ namespace MyNihongo.Option.Extensions
 			@this.HasValue
 				? @this.Value
 				: fallbackValue;
-		
+
 		public static Optional<TResult> Convert<TSource, TResult>(this Optional<TSource> @this, Func<TSource, TResult> convertFunc) =>
 			@this.HasValue
 				? convertFunc(@this.Value)
 				: Optional<TResult>.None();
-		
+
 		public static TResult ConvertOr<TSource, TResult>(this Optional<TSource> @this, Func<TSource, TResult> convertFunc, TResult fallbackValue) =>
 			@this.HasValue
 				? convertFunc(@this.Value)
 				: fallbackValue;
 
-		public static void IfHasValue<T>(this Optional<T> @this, Action<T>? action)
+		public static OptionalElse IfHasValue<T>(this Optional<T> @this, Action<T>? action)
 		{
 			if (action == null)
 				throw new ArgumentNullException(nameof(action));
 
-			if (@this.HasValue)
-				action(@this.Value);
-		}
-		
-		public static async ValueTask IfHasValueAsync<T>(this Optional<T> @this, Func<T, Task>? funcAsync)
-		{
-			if (funcAsync == null)
-				throw new ArgumentNullException(nameof(funcAsync));
+			if (!@this.HasValue)
+				return OptionalElse.Execute();
 
-			if (@this.HasValue)
-				await funcAsync(@this.Value)
-					.ConfigureAwait(false);
+			action(@this.Value);
+			return OptionalElse.Finished();
 		}
 
-		public static async ValueTask IfHasValueAsync<T>(this Optional<T> @this, Func<T, ValueTask>? funcAsync)
+		public static async ValueTask<OptionalElse> IfHasValueAsync<T>(this Optional<T> @this, Func<T, Task>? actionAsync)
 		{
-			if (funcAsync == null)
-				throw new ArgumentNullException(nameof(funcAsync));
+			if (actionAsync == null)
+				throw new ArgumentNullException(nameof(actionAsync));
 
-			if (@this.HasValue)
-				await funcAsync(@this.Value)
-					.ConfigureAwait(false);
+			if (!@this.HasValue)
+				return OptionalElse.Execute();
+
+			await actionAsync(@this.Value)
+				.ConfigureAwait(false);
+
+			return OptionalElse.Finished();
+		}
+
+		public static async ValueTask<OptionalElse> IfHasValueAsync<T>(this Optional<T> @this, Func<T, ValueTask>? actionAsync)
+		{
+			if (actionAsync == null)
+				throw new ArgumentNullException(nameof(actionAsync));
+
+			if (!@this.HasValue)
+				return OptionalElse.Execute();
+
+			await actionAsync(@this.Value)
+				.ConfigureAwait(false);
+
+			return OptionalElse.Finished();
 		}
 	}
 }
