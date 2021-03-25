@@ -23,8 +23,17 @@ var none = Optional<int>.None();
 var value = Optional<int>.Of(123).ValueOr(321);
 var convertOptional = Optional<int>.Of(123).Convert(x => (long)x);
 var convertValue = Optional<int>.Of(123).ConvertOr(x => (long)x, 321L);
+```
+### Invoke functions if a value is present or not
+Both synchronous (void) and asynchronous (Task and ValueTask) can be invoked.
+```cs
+Optional<int>.Of(123)
+    .IfHasValue(x => { /* do something with the value */ })
+    .OrElse(() => { /* do something if no value */ });
 
-Optional<int>.Of(123).IfHasValue(x => {  });
+await Optional<int>.None()
+    .IfHasValueAsync(x => new ValueTask())
+    .OrElseAsync(() => new ValueTask());
 ```
 ### Create an Optional&#60;T&#62; from IEnumerable&#60;T&#62;
 FirstOrOptional
