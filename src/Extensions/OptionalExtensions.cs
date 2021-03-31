@@ -78,5 +78,15 @@ namespace MyNihongo.Option.Extensions
 
 			return OptionalElse.Finished();
 		}
+		
+		public static Optional<T> OrElse<T>(this Optional<T> @this, Func<Optional<T>>? elseFunc)
+		{
+			if (elseFunc == null)
+				throw new ArgumentNullException(nameof(elseFunc));
+
+			return @this.HasValue
+				? @this
+				: elseFunc();
+		}
 	}
 }
