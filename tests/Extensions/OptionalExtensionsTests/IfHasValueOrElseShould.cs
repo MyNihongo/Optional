@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using FluentAssertions;
 using MyNihongo.Option.Extensions;
 using Xunit;
@@ -11,28 +11,36 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public void InvokeSyncSync()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			id.AsOptional()
-				.IfHasValue(x => newId = x)
-				.OrElse(() => newId = anotherId);
+				.IfHasValue(x => newValue = x)
+				.OrElse(() => fallbackValue = anotherId);
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public void NotInvokeSyncSync()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			Optional<int>.None()
-				.IfHasValue(x => newId = x)
-				.OrElse(() => newId = anotherId);
+				.IfHasValue(x => newValue = x)
+				.OrElse(() => fallbackValue = anotherId);
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
@@ -41,36 +49,44 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public async Task InvokeSyncTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await id.AsOptional()
-				.IfHasValue(x => newId = x)
+				.IfHasValue(x => newValue = x)
 				.OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return Task.CompletedTask;
 				});
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public async Task NotInvokeSyncTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await Optional<int>.None()
-				.IfHasValue(x => newId = x)
+				.IfHasValue(x => newValue = x)
 				.OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return Task.CompletedTask;
 				});
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
@@ -79,36 +95,44 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public async Task InvokeSyncValueTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await id.AsOptional()
-				.IfHasValue(x => newId = x)
+				.IfHasValue(x => newValue = x)
 				.OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return new ValueTask();
 				});
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public async Task NotInvokeSyncValueTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await Optional<int>.None()
-				.IfHasValue(x => newId = x)
+				.IfHasValue(x => newValue = x)
 				.OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return new ValueTask();
 				});
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
@@ -117,34 +141,42 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public async Task InvokeTaskSync()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await id.AsOptional()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return Task.CompletedTask;
-				}).OrElseAsync(() => newId = anotherId);
+				}).OrElseAsync(() => fallbackValue = anotherId);
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public async Task NotInvokeTaskSync()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await Optional<int>.None()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return Task.CompletedTask;
-				}).OrElseAsync(() => newId = anotherId);
+				}).OrElseAsync(() => fallbackValue = anotherId);
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
@@ -153,42 +185,50 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public async Task InvokeTaskTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await id.AsOptional()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return Task.CompletedTask;
 				}).OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return Task.CompletedTask;
 				});
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public async Task NotInvokeTaskTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await Optional<int>.None()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return Task.CompletedTask;
 				}).OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return Task.CompletedTask;
 				});
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
@@ -197,42 +237,50 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public async Task InvokeTaskValueTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await id.AsOptional()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return Task.CompletedTask;
 				}).OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return new ValueTask();
 				});
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public async Task NotInvokeTaskValueTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await Optional<int>.None()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return Task.CompletedTask;
 				}).OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return new ValueTask();
 				});
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
@@ -241,34 +289,42 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public async Task InvokeValueTaskSync()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await id.AsOptional()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return new ValueTask();
-				}).OrElseAsync(() => newId = anotherId);
+				}).OrElseAsync(() => fallbackValue = anotherId);
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public async Task NotInvokeValueTaskSync()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await Optional<int>.None()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return new ValueTask();
-				}).OrElseAsync(() => newId = anotherId);
+				}).OrElseAsync(() => fallbackValue = anotherId);
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
@@ -277,42 +333,50 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public async Task InvokeValueTaskTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await id.AsOptional()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return new ValueTask();
 				}).OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return Task.CompletedTask;
 				});
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public async Task NotInvokeValueTaskTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await Optional<int>.None()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return new ValueTask();
 				}).OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return Task.CompletedTask;
 				});
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
@@ -321,42 +385,50 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 		public async Task InvokeValueTaskValueTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await id.AsOptional()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return new ValueTask();
 				}).OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return new ValueTask();
 				});
 
-			newId
+			newValue
 				.Should()
 				.Be(id);
+
+			fallbackValue
+				.Should()
+				.BeNull();
 		}
 
 		[Fact]
 		public async Task NotInvokeValueTaskValueTask()
 		{
 			const int id = 123, anotherId = id * 2;
-			int? newId = null;
+			int? newValue = null, fallbackValue = null;
 
 			await Optional<int>.None()
 				.IfHasValueAsync(x =>
 				{
-					newId = x;
+					newValue = x;
 					return new ValueTask();
 				}).OrElseAsync(() =>
 				{
-					newId = anotherId;
+					fallbackValue = anotherId;
 					return new ValueTask();
 				});
 
-			newId
+			newValue
+				.Should()
+				.BeNull();
+
+			fallbackValue
 				.Should()
 				.Be(anotherId);
 		}
