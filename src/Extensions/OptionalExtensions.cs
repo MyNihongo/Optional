@@ -38,6 +38,32 @@ namespace MyNihongo.Option.Extensions
 			@this.HasValue
 				? convertFunc(@this.Value)
 				: fallbackValue;
+		
+		public static Optional<T> Where<T>(this Optional<T> @this, Func<T, bool>? predicate)
+		{
+			if (predicate == null)
+				throw new ArgumentNullException(nameof(predicate));
+
+			if (!@this.HasValue)
+				return @this;
+
+			return predicate(@this.Value)
+				? @this
+				: Optional<T>.None();
+		}
+
+		public static Optional<T> WhereNot<T>(this Optional<T> @this, Func<T, bool>? predicate)
+		{
+			if (predicate == null)
+				throw new ArgumentNullException(nameof(predicate));
+
+			if (!@this.HasValue)
+				return @this;
+
+			return predicate(@this.Value)
+				? Optional<T>.None()
+				: @this;
+		}
 
 		public static OptionalElse IfHasValue<T>(this Optional<T> @this, Action<T>? action)
 		{
