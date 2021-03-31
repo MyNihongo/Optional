@@ -13,6 +13,11 @@ namespace MyNihongo.Option.Extensions
 			@this.HasValue
 				? @this.Value
 				: fallbackValue;
+		
+		public static T? ValueOrDefault<T>(this Optional<T> @this) =>
+			@this.HasValue
+				? @this.Value
+				: default;
 
 		public static Optional<TResult> Convert<TSource, TResult>(this Optional<TSource> @this, Func<TSource, TResult> convertFunc) =>
 			@this.HasValue
