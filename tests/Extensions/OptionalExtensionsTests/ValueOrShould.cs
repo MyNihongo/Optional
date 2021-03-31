@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+using System;
+using FluentAssertions;
 using MyNihongo.Option.Extensions;
 using Xunit;
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 {
@@ -30,6 +32,45 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 			result
 				.Should()
 				.Be(anotherValue);
+		}
+
+		[Fact]
+		public void ThrowExceptionIfNull()
+		{
+			Func<Class> input = null;
+
+			Action action = () => Optional<Class>.None()
+				.ValueOr(input);
+
+			action
+				.Should()
+				.ThrowExactly<ArgumentNullException>();
+		}
+
+		[Fact]
+		public void ReturnValueIfPresent()
+		{
+			Class item1 = new() { Id = 1 }, item2 = new() { Id = 2 };
+
+			var result = item1.AsOptional()
+				.ValueOr(() => item2);
+
+			result
+				.Should()
+				.Be(item1);
+		}
+
+		[Fact]
+		public void ReturnFuncValueIfNotPresent()
+		{
+			Class item2 = new() { Id = 2 };
+
+			var result = Optional<Class>.None()
+				.ValueOr(() => item2);
+
+			result
+				.Should()
+				.Be(item2);
 		}
 	}
 }
