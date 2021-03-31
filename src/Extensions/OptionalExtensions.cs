@@ -18,6 +18,16 @@ namespace MyNihongo.Option.Extensions
 			@this.HasValue
 				? @this.Value
 				: default;
+		
+		public static T ValueOr<T>(this Optional<T> @this, Func<T>? valueFunc)
+		{
+			if (valueFunc == null)
+				throw new ArgumentNullException(nameof(valueFunc));
+
+			return @this.HasValue
+				? @this.Value
+				: valueFunc();
+		}
 
 		public static Optional<TResult> Convert<TSource, TResult>(this Optional<TSource> @this, Func<TSource, TResult> convertFunc) =>
 			@this.HasValue
