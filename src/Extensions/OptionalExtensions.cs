@@ -77,6 +77,16 @@ namespace MyNihongo.Option.Extensions
 			return OptionalElse.Finished();
 		}
 
+		public static Optional<T> OrElse<T>(this Optional<T> @this, Func<Optional<T>>? elseFunc)
+		{
+			if (elseFunc == null)
+				throw new ArgumentNullException(nameof(elseFunc));
+
+			return @this.HasValue
+				? @this
+				: elseFunc();
+		}
+#if NET5_0
 		public static async ValueTask<OptionalElse> IfHasValueAsync<T>(this Optional<T> @this, Func<T, Task>? actionAsync)
 		{
 			if (actionAsync == null)
@@ -104,15 +114,18 @@ namespace MyNihongo.Option.Extensions
 
 			return OptionalElse.Finished();
 		}
-		
-		public static Optional<T> OrElse<T>(this Optional<T> @this, Func<Optional<T>>? elseFunc)
+#elif NET40
+		public static OptionalElse IfHasValue<T>(this Optional<T> @this, Func<T, Task>? actionAsync)
 		{
-			if (elseFunc == null)
-				throw new ArgumentNullException(nameof(elseFunc));
+			if (actionAsync == null)
+				throw new ArgumentNullException(nameof(actionAsync));
 
-			return @this.HasValue
-				? @this
-				: elseFunc();
+			if (!@this.HasValue)
+				return OptionalElse.Execute();
+
+			Task.WaitAll(actionAsync(@this.Value));
+			return OptionalElse.Finished();
 		}
+#endif
 	}
 }
