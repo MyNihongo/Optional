@@ -17,9 +17,14 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 
 			Action action = () => input.FirstOrOptional();
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<ArgumentNullException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<ArgumentNullException>();
+#endif
 		}
 		
 		[Fact]
@@ -36,7 +41,7 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 		[Fact]
 		public void ReturnNoneIfEmptyList()
 		{
-			var result = Array.Empty<Class>()
+			var result = new Class[0]
 				.FirstOrOptional();
 
 			result.HasValue
@@ -50,9 +55,8 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 			Class item1 = new() { Id = 1, Name = "name" },
 				item2 = new() { Id = 1, Name = "name" };
 
-			var result = Enumerable.Empty<Class>()
-				.Append(item1)
-				.Append(item2)
+			var result = new[] { item1, item2 }
+				.AsEnumerable()
 				.FirstOrOptional();
 
 			result.Value
@@ -81,9 +85,14 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 
 			Action action = () => input.FirstOrOptional(x => x.Id > 0);
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<ArgumentNullException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<ArgumentNullException>();
+#endif
 		}
 
 		[Fact]
@@ -92,9 +101,14 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 			Action action = () => Enumerable.Empty<Class>()
 				.FirstOrOptional(null);
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<ArgumentNullException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<ArgumentNullException>();
+#endif
 		}
 
 		[Fact]

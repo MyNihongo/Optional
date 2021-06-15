@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net40</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<Authors>MyNihongo</Authors>
+		<Product>MyNihongo</Product>
+		<Copyright>Copyright © 2021 MyNihongo</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Version>2.0.5</Version>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageProjectUrl>https://github.com/MyNihongo/Optional</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/MyNihongo/Optional</RepositoryUrl>
+		<PackageIcon>favico.png</PackageIcon>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="tests\**" />
+	  <EmbeddedResource Remove="tests\**" />
+	  <None Remove="tests\**" />
+	  <None Include="..\favico.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
+</Project>

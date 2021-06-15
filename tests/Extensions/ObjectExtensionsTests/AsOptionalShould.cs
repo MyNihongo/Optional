@@ -6,24 +6,32 @@ namespace MyNihongo.Option.Tests.Extensions.ObjectExtensionsTests
 {
 	public sealed class AsOptionalShould
 	{
-		[Theory]
-		[InlineData(null)]
-		[InlineData(true)]
-		[InlineData(123)]
-		[InlineData("string")]
-		[InlineData(123L)]
-		[InlineData(123d)]
-		public void CreateOptional(object input)
+		[Fact]
+		public void CreateOptional()
 		{
-			var result = input.AsOptional();
+			var values = new object[]
+			{
+				null,
+				true,
+				123,
+				"string",
+				123L,
+				123d
+			};
 
-			result.HasValue
-				.Should()
-				.BeTrue();
+			foreach (var value in values)
+			{
+				var result = value.AsOptional();
 
-			result.Value
-				.Should()
-				.Be(input);
+				result.HasValue
+					.Should()
+					.BeTrue();
+
+				result.Value
+					.Should()
+					.Be(value);
+
+			}
 		}
 	}
 }

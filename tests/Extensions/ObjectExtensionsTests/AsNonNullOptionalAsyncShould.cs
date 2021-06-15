@@ -8,6 +8,7 @@ namespace MyNihongo.Option.Tests.Extensions.ObjectExtensionsTests
 {
 	public sealed class AsNonNullOptionalAsyncShould
 	{
+#if NET5_0
 		[Fact]
 		public async Task CreateSyncIfNotNull()
 		{
@@ -93,5 +94,7 @@ namespace MyNihongo.Option.Tests.Extensions.ObjectExtensionsTests
 				.Should()
 				.BeFalse();
 		}
+#elif NET40
+#endif
 	}
 }

@@ -9,11 +9,16 @@ namespace MyNihongo.Option.Tests.OptionalTests
 		[Fact]
 		public void ThrowExceptionIfNoValue()
 		{
-			Func<string> action = () => Optional<string>.None().Value;
+			Action action = () => { var _ = Optional<string>.None().Value; };
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<InvalidOperationException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<InvalidOperationException>();
+#endif
 		}
 
 		[Fact]

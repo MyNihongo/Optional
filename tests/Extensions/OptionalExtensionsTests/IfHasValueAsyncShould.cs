@@ -9,6 +9,7 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 {
 	public sealed class IfHasValueAsyncShould
 	{
+#if NET5_0
 		[Fact]
 		public async Task ThrowExceptionIfActionTaskNull()
 		{
@@ -120,5 +121,7 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 				.Should()
 				.BeFalse();
 		}
+#elif NET40
+#endif
 	}
 }

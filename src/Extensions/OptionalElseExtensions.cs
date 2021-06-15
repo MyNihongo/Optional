@@ -13,7 +13,7 @@ namespace MyNihongo.Option.Extensions
 			if (@this.ShouldExecute)
 				action();
 		}
-
+#if NET5_0
 		public static async ValueTask OrElseAsync(this OptionalElse @this, Func<Task>? actionAsync)
 		{
 			if (actionAsync == null)
@@ -68,5 +68,7 @@ namespace MyNihongo.Option.Extensions
 				await actionAsync()
 					.ConfigureAwait(false);
 		}
+#elif NET40
+#endif
 	}
 }
