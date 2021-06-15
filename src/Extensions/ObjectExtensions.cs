@@ -54,33 +54,6 @@ namespace MyNihongo.Option.Extensions
 		}
 
 #elif NET40
-		public static Task<Optional<T>> AsOptionalAsync<T>(this T @this) =>
-			new(() => @this);
-
-		public static Optional<T> AsOptionalAsync<T>(this Task<T> @this)
-		{
-			Task.WaitAll(@this);
-			return @this.Result;
-		}
-
-		public static Task<Optional<T>> AsNonNullOptionalAsync<T>(this T @this)
-		{
-			var result = @this != null
-				? Optional<T>.Of(@this)
-				: Optional<T>.None();
-
-			return new Task<Optional<T>>(() => result);
-		}
-
-		public static Optional<T> AsNonNullOptionalAsync<T>(this Task<T> @this)
-		{
-			Task.WaitAll(@this);
-			var result = @this.Result;
-
-			return result != null
-				? Optional<T>.Of(result)
-				: Optional<T>.None();
-		}
 #endif
 	}
 }

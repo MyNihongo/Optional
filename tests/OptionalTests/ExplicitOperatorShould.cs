@@ -25,11 +25,16 @@ namespace MyNihongo.Option.Tests.OptionalTests
 		{
 			var optional = Optional<int>.None();
 
-			Func<int> action = () => (int)optional;
+			Action action = () => { var _ = (int) optional; };
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<InvalidOperationException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<InvalidOperationException>();
+#endif
 		}
 	}
 }

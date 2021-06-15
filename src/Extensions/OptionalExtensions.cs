@@ -115,17 +115,6 @@ namespace MyNihongo.Option.Extensions
 			return OptionalElse.Finished();
 		}
 #elif NET40
-		public static OptionalElse IfHasValue<T>(this Optional<T> @this, Func<T, Task>? actionAsync)
-		{
-			if (actionAsync == null)
-				throw new ArgumentNullException(nameof(actionAsync));
-
-			if (!@this.HasValue)
-				return OptionalElse.Execute();
-
-			Task.WaitAll(actionAsync(@this.Value));
-			return OptionalElse.Finished();
-		}
 #endif
 	}
 }

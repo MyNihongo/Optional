@@ -1,4 +1,5 @@
-﻿namespace MyNihongo.Option
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("MyNihongo.Option.Tests")]
+namespace MyNihongo.Option
 {
 	public sealed class OptionalElse
 	{

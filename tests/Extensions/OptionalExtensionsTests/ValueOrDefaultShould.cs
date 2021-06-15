@@ -6,24 +6,31 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 {
 	public sealed class ValueOrDefaultShould
 	{
-		[Theory]
-		[InlineData("string")]
-		[InlineData((byte)123)]
-		[InlineData((short)123)]
-		[InlineData(123)]
-		[InlineData(123L)]
-		[InlineData(123d)]
-		[InlineData(123UL)]
-		[InlineData(123f)]
-		[InlineData(true)]
-		public void ReturnValues(object value)
+		[Fact]
+		public void ReturnValues()
 		{
-			var result = value.AsOptional()
-				.ValueOrDefault();
+			var values = new object[]
+			{
+				"string",
+				(byte) 123,
+				(short) 123,
+				123,
+				123L,
+				123d,
+				123UL,
+				123f,
+				true
+			};
 
-			result
-				.Should()
-				.Be(value);
+			foreach (var value in values)
+			{
+				var result = value.AsOptional()
+					.ValueOrDefault();
+
+				result
+					.Should()
+					.Be(value);
+			}
 		}
 
 		[Fact]

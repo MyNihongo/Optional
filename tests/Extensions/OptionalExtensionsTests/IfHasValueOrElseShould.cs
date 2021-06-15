@@ -44,7 +44,7 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 				.Should()
 				.Be(anotherId);
 		}
-
+#if NET5_0
 		[Fact]
 		public async Task InvokeSyncTask()
 		{
@@ -432,5 +432,7 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 				.Should()
 				.Be(anotherId);
 		}
+#elif NET40
+#endif
 	}
 }

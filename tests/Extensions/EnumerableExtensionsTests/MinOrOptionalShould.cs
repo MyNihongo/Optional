@@ -17,9 +17,14 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 
 			Action action = () => input.MinOrOptional();
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<ArgumentNullException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<ArgumentNullException>();
+#endif
 		}
 
 		[Fact]
@@ -49,10 +54,8 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 		{
 			const string name = nameof(name);
 
-			var result = Enumerable.Empty<string>()
-				.Append(null)
-				.Append(name)
-				.Append(null)
+			var result = new [] { null, name, null }
+				.AsEnumerable()
 				.MinOrOptional();
 
 			result.Value
@@ -65,10 +68,8 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 		{
 			const string name1 = nameof(name1), name2 = nameof(name2), name3 = nameof(name3);
 
-			var result = Enumerable.Empty<string>()
-				.Append(name3)
-				.Append(name1)
-				.Append(name2)
+			var result = new[] { name3, name1, name2 }
+				.AsEnumerable()
 				.MinOrOptional();
 
 			result.Value
@@ -81,10 +82,8 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 		{
 			const int id1 = 1, id2 = 2, id3 = 3;
 
-			var result = Enumerable.Empty<int>()
-				.Append(id3)
-				.Append(id1)
-				.Append(id2)
+			var result = new[] { id3, id1, id2 }
+				.AsEnumerable()
 				.MinOrOptional();
 
 			result.Value
@@ -99,9 +98,14 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 
 			Action action = () => input.MinOrOptional(x => x.Name);
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<ArgumentNullException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<ArgumentNullException>();
+#endif
 		}
 
 		[Fact]
@@ -110,9 +114,14 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 			Action action = () => Enumerable.Empty<Class>()
 				.MinOrOptional<Class, string>(null);
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<ArgumentNullException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<ArgumentNullException>();
+#endif
 		}
 
 		[Fact]
@@ -142,15 +151,13 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 		{
 			const string name = nameof(name);
 
-			var result = Enumerable.Empty<Class>()
-				.Append(new Class())
-				.Append(new Class { Name = "name"})
-				.Append(null)
+			var result = new[] { new Class(), new Class { Name = name }, null }
+				.AsEnumerable()
 				.MinOrOptional(x => x?.Name);
 
 			result.Value
 				.Should()
-				.Be(name);
+				.Be(string.Empty);
 		}
 
 		[Fact]
@@ -158,10 +165,8 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 		{
 			const string name1 = nameof(name1), name2 = nameof(name2), name3 = nameof(name3);
 
-			var result = Enumerable.Empty<Class>()
-				.Append(new Class { Name = name3})
-				.Append(new Class { Name = name1})
-				.Append(new Class { Name = name2})
+			var result = new[] { new Class { Name = name1 }, new Class { Name = name3 }, new Class { Name = name2 } }
+				.AsEnumerable()
 				.MinOrOptional(x => x.Name);
 
 			result.Value
@@ -174,10 +179,8 @@ namespace MyNihongo.Option.Tests.Extensions.EnumerableExtensionsTests
 		{
 			const int id1 = 1, id2 = 2, id3 = 3;
 
-			var result = Enumerable.Empty<Class>()
-				.Append(new Class { Id = id3 })
-				.Append(new Class { Id = id1 })
-				.Append(new Class { Id = id2 })
+			var result = new[] { new Class { Id = id1 }, new Class { Id = id3 }, new Class { Id = id2 } }
+				.AsEnumerable()
 				.MinOrOptional(x => x.Id);
 
 			result.Value

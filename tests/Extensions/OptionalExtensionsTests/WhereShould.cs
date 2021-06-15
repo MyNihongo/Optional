@@ -16,9 +16,14 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 			Action action = () => Optional<Class>.None()
 				.Where(func);
 
+#if NET5_0
 			action
 				.Should()
 				.ThrowExactly<ArgumentNullException>();
+#elif NET40
+			action
+				.ShouldThrowExactly<ArgumentNullException>();
+#endif
 		}
 
 		[Fact]

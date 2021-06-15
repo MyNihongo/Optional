@@ -7,6 +7,7 @@ namespace MyNihongo.Option.Tests.Extensions.ObjectExtensionsTests
 {
 	public sealed class AsOptionalAsyncShould
 	{
+#if NET5_0
 		[Theory]
 		[InlineData(null)]
 		[InlineData(true)]
@@ -68,5 +69,7 @@ namespace MyNihongo.Option.Tests.Extensions.ObjectExtensionsTests
 				.Should()
 				.Be(input);
 		}
+#elif NET40
+#endif
 	}
 }
