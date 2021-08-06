@@ -1,4 +1,5 @@
 [![Version](https://img.shields.io/nuget/v/MyNihongo.Option?style=plastic)](https://www.nuget.org/packages/MyNihongo.Option/)  
+[![Nuget downloads](https://img.shields.io/nuget/dt/MyNihongo.Option?label=nuget%20downloads&logo=nuget&style=plastic)](https://www.nuget.org/packages/MyNihongo.Option/)    
 A very simple implementation of the optional pattern with a few extension methods.
 ### Create an Optional&#60;T&#62;
 ```cs
