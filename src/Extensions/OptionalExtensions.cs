@@ -28,7 +28,16 @@ namespace MyNihongo.Option.Extensions
 				? @this.Value
 				: valueFunc();
 		}
+#if NET5_0
+		public static async ValueTask<T> ValueOrAsync<T>(this ValueTask<Optional<T>> @this, T fallbackValue)
+		{
+			var optional = await @this.ConfigureAwait(false);
 
+			return optional.HasValue
+				? optional.Value
+				: fallbackValue;
+		}
+#endif
 		public static Optional<TResult> Convert<TSource, TResult>(this Optional<TSource> @this, Func<TSource, TResult> convertFunc) =>
 			@this.HasValue
 				? convertFunc(@this.Value)
