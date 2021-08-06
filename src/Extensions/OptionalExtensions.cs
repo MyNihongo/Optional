@@ -13,12 +13,20 @@ namespace MyNihongo.Option.Extensions
 			@this.HasValue
 				? @this.Value
 				: fallbackValue;
-		
+
 		public static T? ValueOrDefault<T>(this Optional<T> @this) =>
 			@this.HasValue
 				? @this.Value
 				: default;
-		
+
+		public static T? ValueOrNull<T>(this Optional<T> @this)
+			where T : struct
+		{
+			return @this.HasValue
+				? @this.Value
+				: null;
+		}
+
 		public static T ValueOr<T>(this Optional<T> @this, Func<T>? valueFunc)
 		{
 			if (valueFunc == null)
