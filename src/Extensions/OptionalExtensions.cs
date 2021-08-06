@@ -114,7 +114,20 @@ namespace MyNihongo.Option.Extensions
 
 			return OptionalElse.Finished();
 		}
-#elif NET40
+
+		public static async ValueTask<OptionalElse> IfHasValueAsync<T>(this ValueTask<Optional<T>> @this, Action<T>? action)
+		{
+			if (action == null)
+				throw new ArgumentNullException(nameof(action));
+
+			var optional = await @this.ConfigureAwait(false);
+
+			if (!optional.HasValue)
+				return OptionalElse.Execute();
+
+			action(optional.Value);
+			return OptionalElse.Finished();
+		}
 #endif
 	}
 }
