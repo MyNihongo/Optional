@@ -13,12 +13,20 @@ namespace MyNihongo.Option.Extensions
 			@this.HasValue
 				? @this.Value
 				: fallbackValue;
-		
+
 		public static T? ValueOrDefault<T>(this Optional<T> @this) =>
 			@this.HasValue
 				? @this.Value
 				: default;
-		
+
+		public static T? ValueOrNull<T>(this Optional<T> @this)
+			where T : struct
+		{
+			return @this.HasValue
+				? @this.Value
+				: null;
+		}
+
 		public static T ValueOr<T>(this Optional<T> @this, Func<T>? valueFunc)
 		{
 			if (valueFunc == null)
@@ -28,7 +36,16 @@ namespace MyNihongo.Option.Extensions
 				? @this.Value
 				: valueFunc();
 		}
+#if NET5_0
+		public static async ValueTask<T> ValueOrAsync<T>(this ValueTask<Optional<T>> @this, T fallbackValue)
+		{
+			var optional = await @this.ConfigureAwait(false);
 
+			return optional.HasValue
+				? optional.Value
+				: fallbackValue;
+		}
+#endif
 		public static Optional<TResult> Convert<TSource, TResult>(this Optional<TSource> @this, Func<TSource, TResult> convertFunc) =>
 			@this.HasValue
 				? convertFunc(@this.Value)
@@ -38,7 +55,20 @@ namespace MyNihongo.Option.Extensions
 			@this.HasValue
 				? convertFunc(@this.Value)
 				: fallbackValue;
-		
+#if NET5_0
+		public static async Task<TResult> ConvertOrNewAsync<TSource, TResult>(this Task<Optional<TSource>> @this, Func<TSource, TResult>? convertFunc)
+			where TResult : new()
+		{
+			if (convertFunc == null)
+				throw new ArgumentNullException(nameof(convertFunc));
+
+			var optional = await @this.ConfigureAwait(false);
+
+			return optional.HasValue
+				? convertFunc(optional.Value)
+				: new TResult();
+		}
+#endif
 		public static Optional<T> Where<T>(this Optional<T> @this, Func<T, bool>? predicate)
 		{
 			if (predicate == null)
@@ -114,7 +144,20 @@ namespace MyNihongo.Option.Extensions
 
 			return OptionalElse.Finished();
 		}
-#elif NET40
+
+		public static async ValueTask<OptionalElse> IfHasValueAsync<T>(this ValueTask<Optional<T>> @this, Action<T>? action)
+		{
+			if (action == null)
+				throw new ArgumentNullException(nameof(action));
+
+			var optional = await @this.ConfigureAwait(false);
+
+			if (!optional.HasValue)
+				return OptionalElse.Execute();
+
+			action(optional.Value);
+			return OptionalElse.Finished();
+		}
 #endif
 	}
 }

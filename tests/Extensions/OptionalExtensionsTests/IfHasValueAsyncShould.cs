@@ -7,9 +7,9 @@ using Xunit;
 
 namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 {
+#if NET5_0
 	public sealed class IfHasValueAsyncShould
 	{
-#if NET5_0
 		[Fact]
 		public async Task ThrowExceptionIfActionTaskNull()
 		{
@@ -121,7 +121,53 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 				.Should()
 				.BeFalse();
 		}
-#elif NET40
-#endif
+
+		[Fact]
+		public async Task ThrowExceptionIfActionNull()
+		{
+			Func<Task> action = async () => await ValueTask
+				.FromResult(Optional<int>.None())
+				.IfHasValueAsync(null);
+
+			await action
+				.Should()
+				.ThrowExactlyAsync<ArgumentNullException>();
+		}
+
+		[Fact]
+		public async Task NotInvokeActionIfNoValue()
+		{
+			int? newId = null;
+
+			var result = await ValueTask.FromResult(Optional<int>.None())
+				.IfHasValueAsync(x => newId = x);
+
+			newId
+				.Should()
+				.BeNull();
+
+			result.ShouldExecute
+				.Should()
+				.BeTrue();
+		}
+
+		[Fact]
+		public async Task InvokeActionIfHasValue()
+		{
+			const int id = 123;
+			int? newId = null;
+
+			var result = await ValueTask.FromResult(Optional<int>.Of(id))
+				.IfHasValueAsync(x => newId = x);
+
+			newId
+				.Should()
+				.Be(id);
+
+			result.ShouldExecute
+				.Should()
+				.BeFalse();
+		}
 	}
+#endif
 }
