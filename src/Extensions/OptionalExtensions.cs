@@ -47,7 +47,20 @@ namespace MyNihongo.Option.Extensions
 			@this.HasValue
 				? convertFunc(@this.Value)
 				: fallbackValue;
-		
+#if NET5_0
+		public static async Task<TResult> ConvertOrNewAsync<TSource, TResult>(this Task<Optional<TSource>> @this, Func<TSource, TResult>? convertFunc)
+			where TResult : new()
+		{
+			if (convertFunc == null)
+				throw new ArgumentNullException(nameof(convertFunc));
+
+			var optional = await @this.ConfigureAwait(false);
+
+			return optional.HasValue
+				? convertFunc(optional.Value)
+				: new TResult();
+		}
+#endif
 		public static Optional<T> Where<T>(this Optional<T> @this, Func<T, bool>? predicate)
 		{
 			if (predicate == null)

@@ -5,9 +5,9 @@ using Xunit;
 
 namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 {
+#if NET5_0
 	public sealed class ValueOrAsyncShould
 	{
-#if NET5_0
 		[Fact]
 		public async Task ReturnValueIfHasValue()
 		{
@@ -33,6 +33,6 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
 				.Should()
 				.Be(fallbackValue);
 		}
-#endif
 	}
+#endif
 }

@@ -7,9 +7,9 @@ using Xunit;
 
 namespace MyNihongo.Option.Tests.Extensions.OptionalElseExtensionsTests
 {
+#if NET5_0
 	public sealed class OrElseAsyncShould
 	{
-#if NET5_0
 		[Fact]
 		public async Task ThrowExceptionForStandardIfTaskNull()
 		{
@@ -246,7 +246,6 @@ namespace MyNihongo.Option.Tests.Extensions.OptionalElseExtensionsTests
 				.Should()
 				.BeNull();
 		}
-#elif NET40
-#endif
 	}
+#endif
 }
