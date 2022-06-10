@@ -1,7 +1,7 @@
 namespace MyNihongo.Option;
 
 #if !NET40
-//[System.Text.Json.Serialization.JsonConverter()]
+[JsonConverter(typeof(OptionalJsonConvertorFactory))]
 #endif
 public readonly struct Optional<T> : IEquatable<Optional<T>>
 {

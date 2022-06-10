@@ -7,4 +7,6 @@ public sealed record RecordWithProps
 	public Optional<string> Name { get; set; }
 
 	public Optional<decimal> Salary { get; set; }
+
+	public Optional<bool> IsMarried { get; set; }
 }

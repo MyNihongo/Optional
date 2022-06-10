@@ -6,13 +6,20 @@ public class JsonSerializationShould
 	[Fact]
 	public void SerializeWithOptionalProps()
 	{
+		const string expected = @"{""Id"":123,""Name"":""Name"",""Salary"":{""HasValue"":false},""IsMarried"":true}";
+
 		var fixture = new RecordWithProps
 		{
 			Id = 123,
-			Name = "Name"
+			Name = "Name",
+			IsMarried = true
 		};
 
-		JsonSerializer.Serialize(fixture);
+		var result = JsonSerializer.Serialize(fixture);
+
+		result
+			.Should()
+			.Be(expected);
 	}
 #endif
 }
