@@ -16,6 +16,14 @@
 		<PackageIcon>favico.png</PackageIcon>
 	</PropertyGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' != 'net40'">
+		<PackageReference Include="System.Text.Json" Version="6.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="*.csproj.DotSettings" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<None Include="..\favico.png">
 			<Pack>True</Pack>

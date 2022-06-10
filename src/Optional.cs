@@ -1,5 +1,8 @@
 namespace MyNihongo.Option;
 
+#if !NET40
+//[System.Text.Json.Serialization.JsonConverter()]
+#endif
 public readonly struct Optional<T> : IEquatable<Optional<T>>
 {
 	private static readonly Optional<T> Empty = default;
