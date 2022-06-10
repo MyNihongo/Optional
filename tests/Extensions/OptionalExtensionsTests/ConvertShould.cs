@@ -1,34 +1,28 @@
-﻿using System.Text;
-using FluentAssertions;
-using MyNihongo.Option.Extensions;
-using Xunit;
+﻿namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests;
 
-namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
+public sealed class ConvertShould
 {
-	public sealed class ConvertShould
+	[Fact]
+	public void ConvertOptional()
 	{
-		[Fact]
-		public void ConvertOptional()
-		{
-			const int id = 123;
+		const int id = 123;
 
-			var result = Optional<Class>.Of(new Class { Id = id })
-				.Convert(x => x.Id);
+		var result = Optional<Class>.Of(new Class { Id = id })
+			.Convert(x => x.Id);
 
-			result.Value
-				.Should()
-				.Be(id);
-		}
+		result.Value
+			.Should()
+			.Be(id);
+	}
 
-		[Fact]
-		public void ConvertWithNone()
-		{
-			var result = Optional<Class>.None()
-				.Convert(x => x.Id);
+	[Fact]
+	public void ConvertWithNone()
+	{
+		var result = Optional<Class>.None()
+			.Convert(x => x.Id);
 
-			result.HasValue
-				.Should()
-				.BeFalse();
-		}
+		result.HasValue
+			.Should()
+			.BeFalse();
 	}
 }

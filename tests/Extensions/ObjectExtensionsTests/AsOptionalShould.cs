@@ -1,37 +1,32 @@
-﻿using FluentAssertions;
-using MyNihongo.Option.Extensions;
-using Xunit;
+﻿namespace MyNihongo.Option.Tests.Extensions.ObjectExtensionsTests;
 
-namespace MyNihongo.Option.Tests.Extensions.ObjectExtensionsTests
+public sealed class AsOptionalShould
 {
-	public sealed class AsOptionalShould
+	[Fact]
+	public void CreateOptional()
 	{
-		[Fact]
-		public void CreateOptional()
+		var values = new object[]
 		{
-			var values = new object[]
-			{
-				null,
-				true,
-				123,
-				"string",
-				123L,
-				123d
-			};
+			null,
+			true,
+			123,
+			"string",
+			123L,
+			123d
+		};
 
-			foreach (var value in values)
-			{
-				var result = value.AsOptional();
+		foreach (var value in values)
+		{
+			var result = value.AsOptional();
 
-				result.HasValue
-					.Should()
-					.BeTrue();
+			result.HasValue
+				.Should()
+				.BeTrue();
 
-				result.Value
-					.Should()
-					.Be(value);
+			result.Value
+				.Should()
+				.Be(value);
 
-			}
 		}
 	}
 }

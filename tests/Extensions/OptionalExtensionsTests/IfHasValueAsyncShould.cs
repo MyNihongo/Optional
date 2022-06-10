@@ -1,173 +1,166 @@
-﻿using System;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MyNihongo.Option.Extensions;
-using Xunit;
-// ReSharper disable ExpressionIsAlwaysNull
+﻿// ReSharper disable ExpressionIsAlwaysNull
+namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests;
 
-namespace MyNihongo.Option.Tests.Extensions.OptionalExtensionsTests
+public sealed class IfHasValueAsyncShould
 {
-#if NET5_0
-	public sealed class IfHasValueAsyncShould
+#if !NET40
+	[Fact]
+	public async Task ThrowExceptionIfActionTaskNull()
 	{
-		[Fact]
-		public async Task ThrowExceptionIfActionTaskNull()
-		{
-			Func<Class, Task> actionAsync = null;
+		Func<Class, Task> actionAsync = null;
 
-			Func<Task> action = async () => await Optional<Class>.Of(new Class())
-				.IfHasValueAsync(actionAsync);
+		Func<Task> action = async () => await Optional<Class>.Of(new Class())
+			.IfHasValueAsync(actionAsync);
 
-			await action
-				.Should()
-				.ThrowExactlyAsync<ArgumentNullException>();
-		}
+		await action
+			.Should()
+			.ThrowExactlyAsync<ArgumentNullException>();
+	}
 
-		[Fact]
-		public async Task NotInvokeIfNoValueWithTask()
-		{
-			int? newId = null;
+	[Fact]
+	public async Task NotInvokeIfNoValueWithTask()
+	{
+		int? newId = null;
 
-			var result = await Optional<Class>.None()
-				.IfHasValueAsync(x =>
-				{
-					newId = x.Id;
-					return Task.CompletedTask;
-				});
+		var result = await Optional<Class>.None()
+			.IfHasValueAsync(x =>
+			{
+				newId = x.Id;
+				return Task.CompletedTask;
+			});
 
-			newId
-				.Should()
-				.BeNull();
+		newId
+			.Should()
+			.BeNull();
 
-			result.ShouldExecute
-				.Should()
-				.BeTrue();
-		}
+		result.ShouldExecute
+			.Should()
+			.BeTrue();
+	}
 
-		[Fact]
-		public async Task InvokeIfHasValueWithTask()
-		{
-			const int id = 123;
-			int? newId = null;
+	[Fact]
+	public async Task InvokeIfHasValueWithTask()
+	{
+		const int id = 123;
+		int? newId = null;
 
-			var result = await Optional<Class>.Of(new Class { Id = id })
-				.IfHasValueAsync(x =>
-				{
-					newId = x.Id;
-					return Task.CompletedTask;
-				});
+		var result = await Optional<Class>.Of(new Class { Id = id })
+			.IfHasValueAsync(x =>
+			{
+				newId = x.Id;
+				return Task.CompletedTask;
+			});
 
-			newId
-				.Should()
-				.Be(id);
+		newId
+			.Should()
+			.Be(id);
 
-			result.ShouldExecute
-				.Should()
-				.BeFalse();
-		}
+		result.ShouldExecute
+			.Should()
+			.BeFalse();
+	}
 
-		[Fact]
-		public async Task ThrowExceptionIfActionValueTaskNull()
-		{
-			Func<Class, ValueTask> actionAsync = null;
+	[Fact]
+	public async Task ThrowExceptionIfActionValueTaskNull()
+	{
+		Func<Class, ValueTask> actionAsync = null;
 
-			Func<Task> action = async () => await Optional<Class>.Of(new Class())
-				.IfHasValueAsync(actionAsync);
+		Func<Task> action = async () => await Optional<Class>.Of(new Class())
+			.IfHasValueAsync(actionAsync);
 
-			await action
-				.Should()
-				.ThrowExactlyAsync<ArgumentNullException>();
-		}
+		await action
+			.Should()
+			.ThrowExactlyAsync<ArgumentNullException>();
+	}
 
-		[Fact]
-		public async Task NotInvokeIfNoValueWithValueTask()
-		{
-			int? newId = null;
+	[Fact]
+	public async Task NotInvokeIfNoValueWithValueTask()
+	{
+		int? newId = null;
 
-			var result = await Optional<Class>.None()
-				.IfHasValueAsync(x =>
-				{
-					newId = x.Id;
-					return new ValueTask();
-				});
+		var result = await Optional<Class>.None()
+			.IfHasValueAsync(x =>
+			{
+				newId = x.Id;
+				return new ValueTask();
+			});
 
-			newId
-				.Should()
-				.BeNull();
+		newId
+			.Should()
+			.BeNull();
 
-			result.ShouldExecute
-				.Should()
-				.BeTrue();
-		}
+		result.ShouldExecute
+			.Should()
+			.BeTrue();
+	}
 
-		[Fact]
-		public async Task InvokeIfHasValueWithValueTask()
-		{
-			const int id = 123;
-			int? newId = null;
+	[Fact]
+	public async Task InvokeIfHasValueWithValueTask()
+	{
+		const int id = 123;
+		int? newId = null;
 
-			var result = await Optional<Class>.Of(new Class { Id = id })
-				.IfHasValueAsync(x =>
-				{
-					newId = x.Id;
-					return new ValueTask();
-				});
+		var result = await Optional<Class>.Of(new Class { Id = id })
+			.IfHasValueAsync(x =>
+			{
+				newId = x.Id;
+				return new ValueTask();
+			});
 
-			newId
-				.Should()
-				.Be(id);
+		newId
+			.Should()
+			.Be(id);
 
-			result.ShouldExecute
-				.Should()
-				.BeFalse();
-		}
+		result.ShouldExecute
+			.Should()
+			.BeFalse();
+	}
 
-		[Fact]
-		public async Task ThrowExceptionIfActionNull()
-		{
-			Func<Task> action = async () => await ValueTask
-				.FromResult(Optional<int>.None())
-				.IfHasValueAsync(null);
+	[Fact]
+	public async Task ThrowExceptionIfActionNull()
+	{
+		Func<Task> action = async () => await ValueTask
+			.FromResult(Optional<int>.None())
+			.IfHasValueAsync(null);
 
-			await action
-				.Should()
-				.ThrowExactlyAsync<ArgumentNullException>();
-		}
+		await action
+			.Should()
+			.ThrowExactlyAsync<ArgumentNullException>();
+	}
 
-		[Fact]
-		public async Task NotInvokeActionIfNoValue()
-		{
-			int? newId = null;
+	[Fact]
+	public async Task NotInvokeActionIfNoValue()
+	{
+		int? newId = null;
 
-			var result = await ValueTask.FromResult(Optional<int>.None())
-				.IfHasValueAsync(x => newId = x);
+		var result = await ValueTask.FromResult(Optional<int>.None())
+			.IfHasValueAsync(x => newId = x);
 
-			newId
-				.Should()
-				.BeNull();
+		newId
+			.Should()
+			.BeNull();
 
-			result.ShouldExecute
-				.Should()
-				.BeTrue();
-		}
+		result.ShouldExecute
+			.Should()
+			.BeTrue();
+	}
 
-		[Fact]
-		public async Task InvokeActionIfHasValue()
-		{
-			const int id = 123;
-			int? newId = null;
+	[Fact]
+	public async Task InvokeActionIfHasValue()
+	{
+		const int id = 123;
+		int? newId = null;
 
-			var result = await ValueTask.FromResult(Optional<int>.Of(id))
-				.IfHasValueAsync(x => newId = x);
+		var result = await ValueTask.FromResult(Optional<int>.Of(id))
+			.IfHasValueAsync(x => newId = x);
 
-			newId
-				.Should()
-				.Be(id);
+		newId
+			.Should()
+			.Be(id);
 
-			result.ShouldExecute
-				.Should()
-				.BeFalse();
-		}
+		result.ShouldExecute
+			.Should()
+			.BeFalse();
 	}
 #endif
 }

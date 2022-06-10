@@ -1,54 +1,41 @@
-﻿using System;
-using FluentAssertions;
-using MyNihongo.Option.Extensions;
-using Xunit;
+﻿namespace MyNihongo.Option.Tests.Extensions.OptionalElseExtensionsTests;
 
-namespace MyNihongo.Option.Tests.Extensions.OptionalElseExtensionsTests
+public sealed class OrElseShould
 {
-	public sealed class OrElseShould
+	[Fact]
+	public void ThrowExceptionIfActionNull()
 	{
-		[Fact]
-		public void ThrowExceptionIfActionNull()
-		{
-			Action action = () => OptionalElse.Execute()
-				.OrElse(null);
+		var action = () => OptionalElse.Execute()
+			.OrElse(null);
 
-#if NET5_0
-			action
-				.Should()
-				.ThrowExactly<ArgumentNullException>();
-#elif NET40
-			action
-				.ShouldThrowExactly<ArgumentNullException>();
-#endif
-		}
+		action.ShouldThrow<ArgumentNullException>();
+	}
 
-		[Fact]
-		public void ExecuteAction()
-		{
-			const int id = 123;
-			int? newId = null;
+	[Fact]
+	public void ExecuteAction()
+	{
+		const int id = 123;
+		int? newId = null;
 
-			OptionalElse.Execute()
-				.OrElse(() => newId = id);
+		OptionalElse.Execute()
+			.OrElse(() => newId = id);
 
-			newId
-				.Should()
-				.Be(id);
-		}
+		newId
+			.Should()
+			.Be(id);
+	}
 
-		[Fact]
-		public void NotExecuteAction()
-		{
-			const int id = 123;
-			int? newId = null;
+	[Fact]
+	public void NotExecuteAction()
+	{
+		const int id = 123;
+		int? newId = null;
 
-			OptionalElse.Finished()
-				.OrElse(() => newId = id);
+		OptionalElse.Finished()
+			.OrElse(() => newId = id);
 
-			newId
-				.Should()
-				.BeNull();
-		}
+		newId
+			.Should()
+			.BeNull();
 	}
 }

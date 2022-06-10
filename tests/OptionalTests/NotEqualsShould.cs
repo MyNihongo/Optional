@@ -1,56 +1,52 @@
-﻿using FluentAssertions;
-using Xunit;
+﻿namespace MyNihongo.Option.Tests.OptionalTests;
 
-namespace MyNihongo.Option.Tests.OptionalTests
+public sealed class NotEqualsShould
 {
-	public sealed class NotEqualsShould
+	[Fact]
+	public void ReturnFalseIfValueEqual()
 	{
-		[Fact]
-		public void ReturnFalseIfValueEqual()
-		{
-			Optional<int> item1 = 1, item2 = 1;
+		Optional<int> item1 = 1, item2 = 1;
 
-			var result = item1 != item2;
+		var result = item1 != item2;
 
-			result
-				.Should()
-				.BeFalse();
-		}
+		result
+			.Should()
+			.BeFalse();
+	}
 
-		[Fact]
-		public void ReturnTrueIfValueNotEqual()
-		{
-			Optional<int> item1 = 1, item2 = 2;
+	[Fact]
+	public void ReturnTrueIfValueNotEqual()
+	{
+		Optional<int> item1 = 1, item2 = 2;
 
-			var result = item1 != item2;
+		var result = item1 != item2;
 
-			result
-				.Should()
-				.BeTrue();
-		}
+		result
+			.Should()
+			.BeTrue();
+	}
 
-		[Fact]
-		public void ReturnTrueIfOneHasNoValue()
-		{
-			Optional<int> item1 = 1, item2 = Optional<int>.None();
+	[Fact]
+	public void ReturnTrueIfOneHasNoValue()
+	{
+		Optional<int> item1 = 1, item2 = Optional<int>.None();
 
-			var result = item1 != item2;
+		var result = item1 != item2;
 
-			result
-				.Should()
-				.BeTrue();
-		}
+		result
+			.Should()
+			.BeTrue();
+	}
 
-		[Fact]
-		public void ReturnFalseIfBothNoValue()
-		{
-			Optional<int> item1 = Optional<int>.None(), item2 = Optional<int>.None();
+	[Fact]
+	public void ReturnFalseIfBothNoValue()
+	{
+		Optional<int> item1 = Optional<int>.None(), item2 = Optional<int>.None();
 
-			var result = item1 != item2;
+		var result = item1 != item2;
 
-			result
-				.Should()
-				.BeFalse();
-		}
+		result
+			.Should()
+			.BeFalse();
 	}
 }
