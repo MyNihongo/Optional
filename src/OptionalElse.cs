@@ -1,19 +1,17 @@
-﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("MyNihongo.Option.Tests")]
-namespace MyNihongo.Option
+﻿namespace MyNihongo.Option;
+
+public sealed class OptionalElse
 {
-	public sealed class OptionalElse
+	private OptionalElse(bool shouldExecute)
 	{
-		private OptionalElse(bool shouldExecute)
-		{
-			ShouldExecute = shouldExecute;
-		}
-
-		internal bool ShouldExecute { get; }
-
-		internal static OptionalElse Execute() =>
-			new(true);
-
-		internal static OptionalElse Finished() =>
-			new(false);
+		ShouldExecute = shouldExecute;
 	}
+
+	internal bool ShouldExecute { get; }
+
+	internal static OptionalElse Execute() =>
+		new(true);
+
+	internal static OptionalElse Finished() =>
+		new(false);
 }

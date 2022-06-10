@@ -1,41 +1,37 @@
-﻿using FluentAssertions;
-using Xunit;
+﻿namespace MyNihongo.Option.Tests.OptionalTests;
 
-namespace MyNihongo.Option.Tests.OptionalTests
+public sealed class OptionalShould
 {
-	public sealed class OptionalShould
+	[Fact]
+	public void HaveValue()
 	{
-		[Fact]
-		public void HaveValue()
-		{
-			var result = Optional<string>.Of(null)
-				.HasValue;
+		var result = Optional<string>.Of(null)
+			.HasValue;
 
-			result
-				.Should()
-				.BeTrue();
-		}
+		result
+			.Should()
+			.BeTrue();
+	}
 
-		[Fact]
-		public void NotHaveValue()
-		{
-			var result = Optional<string>.None()
-				.HasValue;
+	[Fact]
+	public void NotHaveValue()
+	{
+		var result = Optional<string>.None()
+			.HasValue;
 
-			result
-				.Should()
-				.BeFalse();
-		}
+		result
+			.Should()
+			.BeFalse();
+	}
 
-		[Fact]
-		public void ReturnValue()
-		{
-			var result = Optional<string>.Of(null)
-				.Value;
+	[Fact]
+	public void ReturnValue()
+	{
+		var result = Optional<string>.Of(null)
+			.Value;
 
-			result
-				.Should()
-				.BeNull();
-		}
+		result
+			.Should()
+			.BeNull();
 	}
 }
