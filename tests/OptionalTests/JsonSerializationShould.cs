@@ -4,7 +4,7 @@ public class JsonSerializationShould
 {
 #if !NET40
 	[Fact]
-	public void SerializeWithOptionalProps()
+	public void SerialiseWithOptionalProps()
 	{
 		const string expected = @"{""Id"":123,""Name"":""Name"",""Salary"":{""HasValue"":false},""IsMarried"":true}";
 
