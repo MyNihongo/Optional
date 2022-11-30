@@ -10,10 +10,12 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Version>2.2.0</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>Optional&lt;T&gt; value type for C#</Description>
         <PackageProjectUrl>https://github.com/MyNihongo/Optional</PackageProjectUrl>
         <RepositoryUrl>https://github.com/MyNihongo/Optional</RepositoryUrl>
         <PackageReleaseNotes>https://github.com/MyNihongo/Optional/releases</PackageReleaseNotes>
         <PackageIcon>favico.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'">
@@ -28,6 +30,10 @@
         <None Include="..\favico.png">
             <Pack>True</Pack>
             <PackagePath />
+        </None>
+        <None Include="..\README.md">
+          <Pack>True</Pack>
+          <PackagePath>\</PackagePath>
         </None>
     </ItemGroup>
 
