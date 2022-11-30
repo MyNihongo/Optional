@@ -1,6 +1,6 @@
 ﻿namespace MyNihongo.Option;
 
-public sealed class OptionalElse
+public readonly struct OptionalElse
 {
 	private OptionalElse(bool shouldExecute)
 	{
