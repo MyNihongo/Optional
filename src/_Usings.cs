@@ -6,5 +6,6 @@ global using System.Linq;
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
 #endif
+using System.Runtime.CompilerServices;
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("MyNihongo.Option.Tests")]
+[assembly: InternalsVisibleTo("MyNihongo.Option.Tests")]

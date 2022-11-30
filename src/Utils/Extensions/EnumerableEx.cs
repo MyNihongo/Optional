@@ -201,7 +201,7 @@ public static class EnumerableEx
 				if (x != null && (value == null || comparer.Compare(x, value) < 0))
 					value = x;
 			}
-				
+
 			return value ?? Optional<TSource>.None();
 		}
 
@@ -219,7 +219,7 @@ public static class EnumerableEx
 				hasValue = true;
 			}
 		}
-				
+
 		return hasValue ? value : Optional<TSource>.None();
 	}
 
@@ -263,7 +263,7 @@ public static class EnumerableEx
 	{
 		if (selector == null)
 			throw new ArgumentNullException(nameof(selector));
-			
+
 		return source.Select(selector).MinOrOptional();
 	}
 
