@@ -64,7 +64,9 @@ public readonly struct Optional<T> : IEquatable<Optional<T>>
 	{
 		unchecked
 		{
-			return _value == null ? 0 : (HasValue.GetHashCode() * 777) ^ EqualityComparer<T>.Default.GetHashCode(_value);
+			return _value != null
+				? (HasValue.GetHashCode() * 777) ^ EqualityComparer<T>.Default.GetHashCode(_value)
+				: 0;
 		}
 	}
 

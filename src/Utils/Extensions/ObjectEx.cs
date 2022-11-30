@@ -32,7 +32,7 @@ public static class ObjectEx
 	public static async ValueTask<Optional<T>> AsNonNullOptionalAsync<T>(this ValueTask<T> @this)
 	{
 		var result = await @this.ConfigureAwait(false);
-		
+
 		return result != null
 			? Optional<T>.Of(result)
 			: Optional<T>.None();
